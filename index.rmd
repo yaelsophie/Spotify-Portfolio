@@ -21,6 +21,8 @@ patrick <- get_playlist_audio_features("", "6wlIYjCXIv8vzRWxn8Ee9I")
 
 ### Frame 1
 
+ik ga hier even iets typen
+
 ```{r}
 patrick %>%
   summarise(
