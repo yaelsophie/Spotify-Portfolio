@@ -3,6 +3,7 @@ title: "Storyboard"
 output: 
   flexdashboard::flex_dashboard:
     storyboard: true
+    self_contained: false
 ---
 
 ```{r}
@@ -43,6 +44,8 @@ Link to interview: https://www.youtube.com/watch?v=UqliZIpHWU0
 
 I've made a Spotify playlist including 6 albums. One is left out called 'The Ninth life of louis drax (original motion picture soundtrack)' because it doesn't contain any vocals and is composed for a movie. The playlist contains the following albums: 'Wave', 'Love Songs for Robots', 'Adventures in your Own Backyard', 'Wooden Arms', 'Close to Paradise' and 'Just another Ordinary Day', resulting in a album consisting of 66 songs. (Possibly I will also include EP songs, but that is something I'll decide later on.)
 Link to playlist: https://open.spotify.com/playlist/6wlIYjCXIv8vzRWxn8Ee9I?si=732901d3b2924598
+
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6wlIYjCXIv8vzRWxn8Ee9I?utm_source=generator" width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
 
 
 Typical songs Lighthouse - Patrick Watson Typical because he first uses instruments he is comfortable with, i.e. piano, and uses a height in pitch he uses very often. Lately the song emerges into a heavy instrumentalised song and stronger vocals, where a lot is happening. This is also very tipical for a Patrick Watsong song.
