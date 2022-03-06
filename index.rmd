@@ -133,7 +133,7 @@ bzt %>%
   coord_fixed() +
   scale_fill_viridis_c(guide = "none") +
   theme_classic() +
-  labs(title = "elf-ttttt ritx= "", y = "")
+  labs(title = "SelfsimilarityMatrix", x = "", y = "")
 ```
 
 ### Conclusion
