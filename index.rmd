@@ -39,6 +39,19 @@ zoeken naar nummers van vroegere albums die erg lijken op nummers van recentelij
 I've excluded the album 'the ninth life of louis drax (original motion picture soundtrack)' because it is a cinematic album and doesn't show a lot of vocal use
 
 
+
+### Visualisation I
+
+```{r}
+patrick %>%
+  ggplot(aes(x = speechiness)) +
+  geom_histogram(binwidth = 0.01) 
+
+```
+
+### Visualisation II
+
+
 ```{r}
 patrick %>%
   summarise(
@@ -56,15 +69,8 @@ patrick %>%
     mad_liveness = mad(liveness)
   )
 ```
-### Frame 2
 
-```{r}
-patrick %>%
-  ggplot(aes(x = speechiness)) +
-  geom_histogram(binwidth = 0.01) 
-
-```
-### Frame 3
+### Visualisation III
 
 ```{r}
 patrick %>%
@@ -72,6 +78,9 @@ patrick %>%
   geom_point() 
 
 ```
+
+### Conclusion
+
 
 Details
 =========================================
