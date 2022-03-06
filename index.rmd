@@ -57,7 +57,6 @@ The albums Wave and Close to Paradise have similar scores of speechiness that ar
 I've excluded the album 'the ninth life of louis drax (original motion picture soundtrack)' because it is a cinematic album and doesn't show a lot of vocal use
 
 
-### Visualisation I
 
 ```{r}
 patrick %>%
@@ -66,10 +65,10 @@ patrick %>%
 
 ```
 
-### Visualisation II
 
 
-### Visualisation III
+
+### Visualisation I
 
 ```{r}
 patrick %>%
@@ -80,7 +79,14 @@ patrick %>%
 
 ### Chromagram
 ```{r}
-bzt <-
+
+library(tidyverse)
+library(spotifyr)
+library(dplyr)
+library(ggplot2)
+library(compmus)
+
+wave <-
   get_tidy_audio_analysis("6J0qtvtsAItRdv1Ba4ZdFS") %>% # Change URI.
   compmus_align(beats, segments) %>%                     # Change `bars`
   select(beats) %>%                                      #   in all three
@@ -100,7 +106,7 @@ bzt <-
       )
   )
 
-bzt %>%
+wave %>%
   compmus_gather_timbre() %>%
   ggplot(
     aes(
@@ -118,7 +124,34 @@ bzt %>%
 
 ### Self similarity matrix
 ```{r}
-bzt %>%
+
+library(tidyverse)
+library(spotifyr)
+library(dplyr)
+library(ggplot2)
+library(compmus)
+
+wave <-
+  get_tidy_audio_analysis("6J0qtvtsAItRdv1Ba4ZdFS") %>% # Change URI.
+  compmus_align(beats, segments) %>%                     # Change `bars`
+  select(beats) %>%                                      #   in all three
+  unnest(beats) %>%                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+        compmus_summarise, pitches,
+        method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) %>%
+  mutate(
+    timbre =
+      map(segments,
+        compmus_summarise, timbre,
+        method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+wave %>%
   compmus_self_similarity(timbre, "cosine") %>% 
   ggplot(
     aes(
