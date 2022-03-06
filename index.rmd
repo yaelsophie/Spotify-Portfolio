@@ -111,7 +111,7 @@ bzt %>%
     )
   ) +
   geom_tile() +
-  labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
+  labs(title = "Chromagram", x = "Time (s)", y = NULL, fill = "Magnitude") +
   scale_fill_viridis_c() +                              
   theme_classic()
 ```
@@ -133,7 +133,7 @@ bzt %>%
   coord_fixed() +
   scale_fill_viridis_c(guide = "none") +
   theme_classic() +
-  labs(x = "", y = "")
+  labs(title = "elf-ttttt ritx= "", y = "")
 ```
 
 ### Conclusion
