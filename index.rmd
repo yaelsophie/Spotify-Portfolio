@@ -22,8 +22,8 @@ patrick <- get_playlist_audio_features("", "6wlIYjCXIv8vzRWxn8Ee9I")
 
 ### Self Similarity matrix with chroma (pitches)
 
-This is again a plot for the song 'Wave', where, instead of the first Self Similarity Matrix with timbre, I've used pitches to show the Self Similarity with Chroma. 
-I've come to a realisation that the song has a lot of similar use of pitch/chroma during the entire song, and this is also shown in the Chromagram plot where you can actually see that co2 is often used. 
+
+
 
 
 ```{r}
@@ -72,6 +72,9 @@ wave %>%
   labs(title = "Selfsimilarity Matrix with Chroma", x = "", y = "")
 ```
 
+***
+This is again a plot for the song 'Wave', where, instead of the first Self Similarity Matrix with timbre, I've used pitches to show the Self Similarity with Chroma. 
+I've come to a realisation that the song has a lot of similar use of pitch/chroma during the entire song, and this is also shown in the Chromagram plot where you can actually see that co2 is often used. 
 
 
 ### Introduction
