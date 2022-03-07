@@ -23,9 +23,6 @@ patrick <- get_playlist_audio_features("", "6wlIYjCXIv8vzRWxn8Ee9I")
 ### Self Similarity matrix with chroma (pitches)
 
 
-
-
-
 ```{r}
 
 library(tidyverse)
@@ -73,6 +70,7 @@ wave %>%
 ```
 
 ***
+
 This is again a plot for the song 'Wave', where, instead of the first Self Similarity Matrix with timbre, I've used pitches to show the Self Similarity with Chroma. 
 I've come to a realisation that the song has a lot of similar use of pitch/chroma during the entire song, and this is also shown in the Chromagram plot where you can actually see that co2 is often used. 
 
@@ -115,8 +113,7 @@ I've excluded the album 'the ninth life of louis drax (original motion picture s
 
 ### Visualisation I
 
-My plan is to make a Visualisation per album to see the difference in mode. Is it a song made in major or minor tuning? 
-I hope to see a increase or decrease in the number of songs per album that are defined as major or minor, and link this to his life in time of making that album.
+
 
 ```{r}
 patrick %>%
@@ -125,7 +122,10 @@ patrick %>%
 
 ```
 
+***
 
+My plan is to make a Visualisation per album to see the difference in mode. Is it a song made in major or minor tuning? 
+I hope to see a increase or decrease in the number of songs per album that are defined as major or minor, and link this to his life in time of making that album.
 
 
 ### Visualisation II
@@ -139,10 +139,7 @@ patrick %>%
 
 ### Chromagram
 
-This is a chromagram based on the song 'Wave'.
-It is seen that he used the tone c02 a lot. If you listen to the song, this is also quiet easy to hear and recognise.
 
-I found that while making these plots, using Euclidean normalisation worked the best. I saw the most contrast in these plots and patterns where easily seen. 
 
 ```{r}
 
@@ -188,9 +185,17 @@ wave %>%
   theme_classic()
 ```
 
+***
+
+This is a chromagram based on the song 'Wave'.
+It is seen that he used the tone c02 a lot. If you listen to the song, this is also quiet easy to hear and recognise.
+
+I found that while making these plots, using Euclidean normalisation worked the best. I saw the most contrast in these plots and patterns where easily seen. 
+
+
 ### Self similarity matrix with Timbre
 
-In this plot, patterns in timbre is being shown for the song 'Wave'. It is clear that there are 4 different segments in the song as you can see in the plot. This is surprising for me, because I haven't really paid attention to this before and thought that there were more than 4 different segments. This could of course be true, because my perception of the song is different from that of a algorithm that sorts out the patterns based on timbre. But it is still interesting to see this outcome. 
+
 
 ```{r}
 
@@ -238,9 +243,13 @@ wave %>%
   labs(title = "Selfsimilarity Matrix", x = "", y = "")
 ```
 
+***
+
+In this plot, patterns in timbre is being shown for the song 'Wave'. It is clear that there are 4 different segments in the song as you can see in the plot. This is surprising for me, because I haven't really paid attention to this before and thought that there were more than 4 different segments. This could of course be true, because my perception of the song is different from that of a algorithm that sorts out the patterns based on timbre. But it is still interesting to see this outcome. 
+
+
 ### Chroma
 
-Here, you see a Chroma plot for two different songs, 'Man Like You' and 'Wave'. I still have to manage to make the plot more clear as you can see. The plot is now not easily readable and interpretable. 
 
 ```{r}
 
@@ -284,6 +293,9 @@ compmus_long_distance(
   scale_fill_viridis_c(guide = NULL)
 ```
 
+***
+
+Here, you see a Chroma plot for two different songs, 'Man Like You' and 'Wave'. I still have to manage to make the plot more clear as you can see. The plot is now not easily readable and interpretable. 
 
 
 ### Conclusion
