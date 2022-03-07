@@ -3,7 +3,6 @@ title: "Storyboard"
 output: 
   flexdashboard::flex_dashboard:
     storyboard: true
-    self_contained: false
 ---
 
 ```{r}
