@@ -21,203 +21,11 @@ patrick <- get_playlist_audio_features("", "6wlIYjCXIv8vzRWxn8Ee9I")
 
 ```
 
-### Introduction
-
-Analyzing the development of the music of Patrick Watson over the years
-
-
-There's one artist that has amazed me the most during my own development in music. For the past several years I've began to love R&B and Neo Soul, and Spotify has guessed these genres quite correctly as seen in my Spotify Wrapped, but this one artist stands out from these genres, and with whom I can connect the most during listening to his songs is Patrick Watson.
-
-
-Patrick Watson composes music in a different genre, namely chamber music but also fusions between classical music and indierock. Over the years, he developed his own style and although these aformentioned genres do make sense, there's something to his music that makes that I can't simply classify his music into a specific genre. This can be due to the various styles he showed in his albums, or the strong emotional feeling I get while listening to his music that makes his music more distinctive from other chamber/indierock music.
-
-
-For now I'm going to step away from the genre classification, but I'm going to examine what kind of developments or changes he made while making various albums over the years. This way, I'm going to take a step away from the emotional meanings in his music, analyse what happens on a computational and numerical matter, and then link this back to emotional circumstances again.
-
-
-I'm not only going to compare the albums to each other, but also what happens within an album. Does it start off with a somehow reserved energy, and will it evolve to a more energetic happining? For example, with the album 'Wave', Patrick Watson explained in an interview that he went through some grief while writing songs for the album. The beginning of the album feels darker coloured and heavier, while the second half of the album feels more uplifting and bright. Is this also showable in some analytics from the songs with the help of looking at features like BPM and pitch?
-
-
-Furthermore, Patrick Watson also mentioned in an interview that he chose to sing lower pitched in his latest album 'Wave'. Is this actually true compared to his other albums, or is it just something he intented to do, but remains more or less the same?
-Link to interview: https://www.youtube.com/watch?v=UqliZIpHWU0
-
-
-I've made a Spotify playlist including 6 albums. One is left out called 'The Ninth life of louis drax (original motion picture soundtrack)' because it doesn't contain any vocals and is composed for a movie. The playlist contains the following albums: 'Wave', 'Love Songs for Robots', 'Adventures in your Own Backyard', 'Wooden Arms', 'Close to Paradise' and 'Just another Ordinary Day', resulting in a album consisting of 66 songs. (Possibly I will also include EP songs, but that is something I'll decide later on.)
-Link to playlist: https://open.spotify.com/playlist/6wlIYjCXIv8vzRWxn8Ee9I?si=732901d3b2924598
-
-
-<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6wlIYjCXIv8vzRWxn8Ee9I?utm_source=generator" width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-
-
-Typical songs Lighthouse - Patrick Watson Typical because he first uses instruments he is comfortable with, i.e. piano, and uses a height in pitch he uses very often. Lately the song emerges into a heavy instrumentalised song and stronger vocals, where a lot is happening. This is also very tipical for a Patrick Watsong song.
-
-
-Atypical songs The Storm - Patrick Watson Atypical because you directly get the feeling that it comes close to a country song while he often doesn't show this style in his music. My question here is, why does it feel like a country song instead of just another song from Patrick Watson?
-More typical and atypical songs will follow.
-
-
-The albums Wave and Close to Paradise have similar scores of speechiness that are close together, they don't differentiate a lot. While other albums differentiate a lot from speechiness within the album itself.
-
-I've excluded the album 'the ninth life of louis drax (original motion picture soundtrack)' because it is a cinematic album and doesn't show a lot of vocal use
-
-### Visualisation I
-
-
-```{r}
-patrick %>%
-  ggplot(aes(x = speechiness)) +
-  geom_histogram(binwidth = 0.01) 
-
-```
-
-
-
-
-### Visualisation II
-
-```{r}
-patrick %>%
-  ggplot(aes(x = speechiness, y = track.album.name)) +
-  geom_point() 
-
-```
-
-### Chromagram
-```{r}
-
-library(tidyverse)
-library(spotifyr)
-library(dplyr)
-library(ggplot2)
-library(compmus)
-
-wave <-
-  get_tidy_audio_analysis("6J0qtvtsAItRdv1Ba4ZdFS") %>% # Change URI.
-  compmus_align(beats, segments) %>%                     # Change `bars`
-  select(beats) %>%                                      #   in all three
-  unnest(beats) %>%                                      #   of these lines.
-  mutate(
-    pitches =
-      map(segments,
-        compmus_summarise, pitches,
-        method = "rms", norm = "euclidean"              # Change summary & norm.
-      )
-  ) %>%
-  mutate(
-    timbre =
-      map(segments,
-        compmus_summarise, timbre,
-        method = "rms", norm = "euclidean"              # Change summary & norm.
-      )
-  )
-
-wave %>%
-  compmus_gather_timbre() %>%
-  ggplot(
-    aes(
-      x = start + duration / 2,
-      width = duration,
-      y = basis,
-      fill = value
-    )
-  ) +
-  geom_tile() +
-  labs(title = "Chromagram", x = "Time (s)", y = NULL, fill = "Magnitude") +
-  scale_fill_viridis_c() +                              
-  theme_classic()
-```
-
-### Self similarity matrix with Timbre
-```{r}
-
-library(tidyverse)
-library(spotifyr)
-library(dplyr)
-library(ggplot2)
-library(compmus)
-
-wave <-
-  get_tidy_audio_analysis("6J0qtvtsAItRdv1Ba4ZdFS") %>% # Change URI.
-  compmus_align(beats, segments) %>%                     # Change `bars`
-  select(beats) %>%                                      #   in all three
-  unnest(beats) %>%                                      #   of these lines.
-  mutate(
-    pitches =
-      map(segments,
-        compmus_summarise, pitches,
-        method = "rms", norm = "euclidean"              # Change summary & norm.
-      )
-  ) %>%
-  mutate(
-    timbre =
-      map(segments,
-        compmus_summarise, timbre,
-        method = "rms", norm = "euclidean"              # Change summary & norm.
-      )
-  )
-
-wave %>%
-  compmus_self_similarity(timbre, "cosine") %>% 
-  ggplot(
-    aes(
-      x = xstart + xduration / 2,
-      width = xduration,
-      y = ystart + yduration / 2,
-      height = yduration,
-      fill = d
-    )
-  ) +
-  geom_tile() +
-  coord_fixed() +
-  scale_fill_viridis_c(guide = "none") +
-  theme_classic() +
-  labs(title = "Selfsimilarity Matrix", x = "", y = "")
-```
-
-### Chroma
-```{r}
-
-library(tidyverse)
-library(spotifyr)
-library(dplyr)
-library(ggplot2)
-library(compmus)
-
-wave <-
-  get_tidy_audio_analysis("6J0qtvtsAItRdv1Ba4ZdFS") %>%
-  select(segments) %>%
-  unnest(segments) %>%
-  select(start, duration, pitches)
-
-likeyou <-
-  get_tidy_audio_analysis("3KBxdqIInwuU5aIEeLmBPp") %>%
-  select(segments) %>%
-  unnest(segments) %>%
-  select(start, duration, pitches)
-
-compmus_long_distance(
-  wave %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
-  likeyou %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
-  feature = pitches,
-  method = "euclidean"
-) %>%
-  ggplot(
-    aes(
-      x = xstart + xduration / 2,
-      width = xduration,
-      y = ystart + yduration / 2,
-      height = yduration,
-      fill = d
-    )
-  ) +
-  geom_tile() +
-  coord_equal() +
-  labs(x = "Wave", y = "Man Like You") +
-  theme_minimal() +
-  scale_fill_viridis_c(guide = NULL)
-```
-
 ### Self Similarity matrix with chroma (pitches)
+
+This is again a plot for the song 'Wave', where, instead of the first Self Similarity Matrix with timbre, I've used pitches to show the Self Similarity with Chroma. 
+I've come to a realisation that the song has a lot of similar use of pitch/chroma during the entire song, and this is also shown in the Chromagram plot where you can actually see that co2 is often used. 
+
 
 ```{r}
 
@@ -266,5 +74,216 @@ wave %>%
 ```
 
 
+
+### Introduction
+
+Analyzing the development of the music of Patrick Watson over the years
+
+
+There's one artist that has amazed me the most during my own development in music. For the past several years I've began to love R&B and Neo Soul, and Spotify has guessed these genres quite correctly as seen in my Spotify Wrapped, but this one artist stands out from these genres, and with whom I can connect the most during listening to his songs is Patrick Watson.
+
+
+Patrick Watson composes music in a different genre, namely chamber music but also fusions between classical music and indierock. Over the years, he developed his own style and although these aformentioned genres do make sense, there's something to his music that makes that I can't simply classify his music into a specific genre. This can be due to the various styles he showed in his albums, or the strong emotional feeling I get while listening to his music that makes his music more distinctive from other chamber/indierock music.
+
+
+For now I'm going to step away from the genre classification, but I'm going to examine what kind of developments or changes he made while making various albums over the years. This way, I'm going to take a step away from the emotional meanings in his music, analyse what happens on a computational and numerical matter, and then link this back to emotional circumstances again.
+
+
+I'm not only going to compare the albums to each other, but also what happens within an album. Does it start off with a somehow reserved energy, and will it evolve to a more energetic happining? For example, with the album 'Wave', Patrick Watson explained in an interview that he went through some grief while writing songs for the album. The beginning of the album feels darker coloured and heavier, while the second half of the album feels more uplifting and bright. Is this also showable in some analytics from the songs with the help of looking at features like BPM and pitch?
+
+
+Furthermore, Patrick Watson also mentioned in an interview that he chose to sing lower pitched in his latest album 'Wave'. Is this actually true compared to his other albums, or is it just something he intented to do, but remains more or less the same?
+Link to interview: https://www.youtube.com/watch?v=UqliZIpHWU0
+
+
+I've made a Spotify playlist including 6 albums. One is left out called 'The Ninth life of louis drax (original motion picture soundtrack)' because it doesn't contain any vocals and is composed for a movie. The playlist contains the following albums: 'Wave', 'Love Songs for Robots', 'Adventures in your Own Backyard', 'Wooden Arms', 'Close to Paradise' and 'Just another Ordinary Day', resulting in a album consisting of 66 songs. (Possibly I will also include EP songs, but that is something I'll decide later on.)
+Link to playlist: https://open.spotify.com/playlist/6wlIYjCXIv8vzRWxn8Ee9I?si=732901d3b2924598
+
+
+Typical songs Lighthouse - Patrick Watson Typical because he first uses instruments he is comfortable with, i.e. piano, and uses a height in pitch he uses very often. Lately the song emerges into a heavy instrumentalised song and stronger vocals, where a lot is happening. This is also very tipical for a Patrick Watsong song.
+
+
+Atypical songs The Storm - Patrick Watson Atypical because you directly get the feeling that it comes close to a country song while he often doesn't show this style in his music. My question here is, why does it feel like a country song instead of just another song from Patrick Watson?
+More typical and atypical songs will follow.
+
+
+The albums Wave and Close to Paradise have similar scores of speechiness that are close together, they don't differentiate a lot. While other albums differentiate a lot from speechiness within the album itself.
+
+I've excluded the album 'the ninth life of louis drax (original motion picture soundtrack)' because it is a cinematic album and doesn't show a lot of vocal use
+
+### Visualisation I
+
+My plan is to make a Visualisation per album to see the difference in mode. Is it a song made in major or minor tuning? 
+I hope to see a increase or decrease in the number of songs per album that are defined as major or minor, and link this to his life in time of making that album.
+
+```{r}
+patrick %>%
+  ggplot(aes(x = mode)) +
+  geom_histogram(binwidth = 0.5) 
+
+```
+
+
+
+
+### Visualisation II
+
+```{r}
+patrick %>%
+  ggplot(aes(x = speechiness, y = track.album.name)) +
+  geom_point() 
+
+```
+
+### Chromagram
+
+This is a chromagram based on the song 'Wave'.
+It is seen that he used the tone c02 a lot. If you listen to the song, this is also quiet easy to hear and recognise.
+
+I found that while making these plots, using Euclidean normalisation worked the best. I saw the most contrast in these plots and patterns where easily seen. 
+
+```{r}
+
+library(tidyverse)
+library(spotifyr)
+library(dplyr)
+library(ggplot2)
+library(compmus)
+
+wave <-
+  get_tidy_audio_analysis("6J0qtvtsAItRdv1Ba4ZdFS") %>% # Change URI.
+  compmus_align(beats, segments) %>%                     # Change `bars`
+  select(beats) %>%                                      #   in all three
+  unnest(beats) %>%                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+        compmus_summarise, pitches,
+        method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) %>%
+  mutate(
+    timbre =
+      map(segments,
+        compmus_summarise, timbre,
+        method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+wave %>%
+  compmus_gather_timbre() %>%
+  ggplot(
+    aes(
+      x = start + duration / 2,
+      width = duration,
+      y = basis,
+      fill = value
+    )
+  ) +
+  geom_tile() +
+  labs(title = "Chromagram", x = "Time (s)", y = NULL, fill = "Magnitude") +
+  scale_fill_viridis_c() +                              
+  theme_classic()
+```
+
+### Self similarity matrix with Timbre
+
+In this plot, patterns in timbre is being shown for the song 'Wave'. It is clear that there are 4 different segments in the song as you can see in the plot. This is surprising for me, because I haven't really paid attention to this before and thought that there were more than 4 different segments. This could of course be true, because my perception of the song is different from that of a algorithm that sorts out the patterns based on timbre. But it is still interesting to see this outcome. 
+
+```{r}
+
+library(tidyverse)
+library(spotifyr)
+library(dplyr)
+library(ggplot2)
+library(compmus)
+
+wave <-
+  get_tidy_audio_analysis("6J0qtvtsAItRdv1Ba4ZdFS") %>% # Change URI.
+  compmus_align(beats, segments) %>%                     # Change `bars`
+  select(beats) %>%                                      #   in all three
+  unnest(beats) %>%                                      #   of these lines.
+  mutate(
+    pitches =
+      map(segments,
+        compmus_summarise, pitches,
+        method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  ) %>%
+  mutate(
+    timbre =
+      map(segments,
+        compmus_summarise, timbre,
+        method = "rms", norm = "euclidean"              # Change summary & norm.
+      )
+  )
+
+wave %>%
+  compmus_self_similarity(timbre, "cosine") %>% 
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_fixed() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_classic() +
+  labs(title = "Selfsimilarity Matrix", x = "", y = "")
+```
+
+### Chroma
+
+Here, you see a Chroma plot for two different songs, 'Man Like You' and 'Wave'. I still have to manage to make the plot more clear as you can see. The plot is now not easily readable and interpretable. 
+
+```{r}
+
+library(tidyverse)
+library(spotifyr)
+library(dplyr)
+library(ggplot2)
+library(compmus)
+
+wave <-
+  get_tidy_audio_analysis("6J0qtvtsAItRdv1Ba4ZdFS") %>%
+  select(segments) %>%
+  unnest(segments) %>%
+  select(start, duration, pitches)
+
+likeyou <-
+  get_tidy_audio_analysis("3KBxdqIInwuU5aIEeLmBPp") %>%
+  select(segments) %>%
+  unnest(segments) %>%
+  select(start, duration, pitches)
+
+compmus_long_distance(
+  wave %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
+  likeyou %>% mutate(pitches = map(pitches, compmus_normalise, "chebyshev")),
+  feature = pitches,
+  method = "euclidean"
+) %>%
+  ggplot(
+    aes(
+      x = xstart + xduration / 2,
+      width = xduration,
+      y = ystart + yduration / 2,
+      height = yduration,
+      fill = d
+    )
+  ) +
+  geom_tile() +
+  coord_equal() +
+  labs(x = "Wave", y = "Man Like You") +
+  theme_minimal() +
+  scale_fill_viridis_c(guide = NULL)
+```
+
+
+
 ### Conclusion
 
+For now, I've plotted a few chromagrams and self similarity matrices, to create an insight into what is happening in the song 'Wave'. In the future, I'll try to make a plot for 2 different songs from 2 different albums that are very typical and then compare them. Eventually I hope to see what kind of developments Patrick Watson made during his carriere.
