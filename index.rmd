@@ -31,7 +31,7 @@ wave %>%
 
 ***
 
-Here, I've plotted 2 plots for the song 'The Wave' - Patrick Watson. The song starts off with an ensemble of classical instruments, mostly strings, that uses a lot of notes with a long duration that create a sort of 'Wave', so to say. Because of those long notes, a specific and consistent tempo is not easily found. Also, with the human ear, I found it not easily recognizable. Therefore, in the tempogram, you don't see an obvious line seconds before second 50. After this, vocals will join and the tempo is a little easier to find. You can find a line just above 140 BPM from 45 to 175 seconds, After 175 seconds, a lot of string instruments will return and the tempo is again more difficult to find. 
+Here, I've plotted a plot (tempogram) for the song 'The Wave' - Patrick Watson. The song starts off with an ensemble of classical instruments, mostly strings, that uses a lot of notes with a long duration that create a sort of 'Wave', so to say. Because of those long notes, a specific and consistent tempo is not easily found. Also, with the human ear, I found it not easily recognizable. Therefore, in the tempogram, you don't see an obvious line seconds before second 50. After this, vocals will join and the tempo is a little easier to find. You can find a line just above 140 BPM from 45 to 175 seconds, After 175 seconds, a lot of string instruments will return and the tempo is again more difficult to find. 
 
 ### Keygram
 ```{r}
