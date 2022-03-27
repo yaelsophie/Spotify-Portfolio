@@ -5,20 +5,83 @@ output:
     storyboard: true
 ---
 
-### Tempogram
 
 ```{r, results = 'hide'}
 library(tidyverse)
+library(tidymodels)
+library(ggdendro)
+library(heatmaply)
 library(spotifyr)
 library(compmus)
+
 ```
 
-
+### Dendrogram
 
 ```{r}
 wave <- get_tidy_audio_analysis("6J0qtvtsAItRdv1Ba4ZdFS")
 ```
 
+```{r}
+halloween <-
+  get_playlist_audio_features("", "6wlIYjCXIv8vzRWxn8Ee9I") %>%
+  add_audio_analysis() %>%
+  mutate(
+    segments = map2(segments, key, compmus_c_transpose),
+    pitches =
+      map(segments,
+        compmus_summarise, pitches,
+        method = "mean", norm = "manhattan"
+      ),
+    timbre =
+      map(
+        segments,
+        compmus_summarise, timbre,
+        method = "mean"
+      )
+  ) %>%
+  mutate(pitches = map(pitches, compmus_normalise, "clr")) %>%
+  mutate_at(vars(pitches, timbre), map, bind_rows) %>%
+  unnest(cols = c(pitches, timbre))
+```
+
+```{r}
+halloween_juice <-
+  recipe(
+    track.name ~
+      energy +
+      loudness +
+      acousticness +
+      instrumentalness +
+      valence +
+      tempo,
+    data = halloween
+  ) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>% 
+  # step_range(all_predictors()) %>% 
+  prep(halloween %>% mutate(track.name = str_trunc(track.name, 20))) %>%
+  juice() %>%
+  column_to_rownames("track.name")
+```
+```{r}
+halloween_dist <- dist(halloween_juice, method = "manhattan")
+```
+
+```{r}
+halloween_dist %>% 
+  hclust(method = "complete") %>% # Try single, average, and complete.
+  dendro_data() %>%
+  ggdendrogram()
+```
+
+
+
+***
+
+Here, I've plotted a dendrogram and a heatmap. I want to make the dendrogram more clear by adding colour to different albums, so that it becomes easier to recognize what song belongs to which album and why the dendrogram chose to put certain songs more near each other than others. The features my dendrogram did its calculations on were: energy, loudness, acousticness, instrumentalness, valence and tempo. I've excluded features like speechiness, because in the audio analysis of the album I've seen that the values of this feature range in a very narrow matter.
+
+### Tempogram
 ```{r}
 wave %>%
   tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) %>%
