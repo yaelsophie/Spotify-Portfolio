@@ -75,11 +75,26 @@ halloween_dist %>%
   ggdendrogram()
 ```
 
+***
 
+Here, I've plotted a dendrogram and in the next tab a heatmap. I want to make the dendrogram more clear by adding colour to different albums, so that it becomes easier to recognize what song belongs to which album and why the dendrogram chose to put certain songs more near each other than others. The features my dendrogram did its calculations on were: energy, loudness, acousticness, instrumentalness, valence and tempo. I've excluded features like speechiness, because in the audio analysis of the album I've seen that the values of this feature range in a very narrow matter.
+
+
+
+### Heatmap
+
+```{r}
+heatmaply(
+  halloween_juice,
+  hclustfun = hclust,
+  hclust_method = "average",  # Change for single, average, or complete linkage.
+  dist_method = "euclidean"
+)
+```
 
 ***
 
-Here, I've plotted a dendrogram and a heatmap. I want to make the dendrogram more clear by adding colour to different albums, so that it becomes easier to recognize what song belongs to which album and why the dendrogram chose to put certain songs more near each other than others. The features my dendrogram did its calculations on were: energy, loudness, acousticness, instrumentalness, valence and tempo. I've excluded features like speechiness, because in the audio analysis of the album I've seen that the values of this feature range in a very narrow matter.
+I myself find the heatmap pretty difficult to read and understand, so in my final Portfolio I will probably exclude this and only include the dendrogram.
 
 ### Tempogram
 ```{r}
