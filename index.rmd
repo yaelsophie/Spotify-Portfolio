@@ -15,7 +15,7 @@ library(spotifyr)
 library(dplyr)
 library(ggplot2)
 library(compmus)
-
+library(dendextend)
 ```
 
 ```{r}
@@ -60,26 +60,12 @@ The albums Wave and Close to Paradise have similar scores of speechiness that ar
 
 I've excluded the album 'the ninth life of louis drax (original motion picture soundtrack)' because it is a cinematic album and doesn't show a lot of vocal use
 
-### Visualisation I
+
+### Visualisation 
 
 ```{r}
 patrick %>%
-  ggplot(aes(x = mode)) +
-  geom_histogram(binwidth = 0.5) 
-
-```
-
-***
-
-My plan is to make a Visualisation per album to see the difference in mode. Is it a song made in major or minor tuning? 
-I hope to see a increase or decrease in the number of songs per album that are defined as major or minor, and link this to his life in time of making that album.
-
-
-### Visualisation II
-
-```{r}
-patrick %>%
-  ggplot(aes(x = speechiness, y = track.album.name)) +
+  ggplot(aes(x = loudness, y = track.album.name)) +
   geom_point() 
 
 ```
