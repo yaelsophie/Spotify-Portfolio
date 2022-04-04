@@ -64,9 +64,11 @@ I've excluded the album 'the ninth life of louis drax (original motion picture s
 ### Visualisation 
 
 ```{r}
-patrick %>%
-  ggplot(aes(x = loudness, y = track.album.name)) +
-  geom_point() 
+
+p <- ggplot(data = patrick, aes(x = loudness, y = track.album.name, color = track.name)) + geom_point()
+
+ggplotly(p)
+
 
 ```
 
